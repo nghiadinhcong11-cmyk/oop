@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build QLNS",
+            "type": "process",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-std=c++17",
+                "main.cpp",
+                "models/ChamCong.cpp",
+                "models/Luong.cpp",
+                "models/NhanVien.cpp",
+                "models/NhanVienFullTime.cpp",
+                "models/NhanVienPartTime.cpp",
+                "models/NhanVienThucTap.cpp",
+                "models/PhongBan.cpp",
+                "services/HeThongQLNS.cpp",
+                "services/QuanLyChamCong.cpp",
+                "services/QuanLyLuong.cpp",
+                "services/QuanLyNhanVien.cpp",
+                "services/QuanLyPhongBan.cpp",
+                "-o",
+                "QLNS.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Run QLNS",
+            "type": "process",
+            "command": "C:\\msys64\\ucrt64\\bin\\bash.exe",
+            "args": [
+                "-lc",
+                "cd /d/Dev/oopcode && ./QLNS.exe"
+            ],
+            "dependsOn": "Build QLNS",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
