@@ -4,14 +4,16 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 static std::vector<std::string> splitString(const std::string& s, char delimiter) {
     std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
+    size_t start = 0, end = 0;
+    while ((end = s.find(delimiter, start)) != std::string::npos) {
+        tokens.push_back(s.substr(start, end - start));
+        start = end + 1;
     }
+    tokens.push_back(s.substr(start));
     return tokens;
 }
 
@@ -33,9 +35,17 @@ void QuanLyChamCong::hienThiDanhSach() const {
         std::cout << "Danh sach cham cong trong." << std::endl;
         return;
     }
+    std::cout << "\n--- DANH SACH CHAM CONG ---" << std::endl;
+    std::cout << std::left << std::setw(15) << "Ma NV"
+              << std::setw(15) << "Thoi gian"
+              << std::right << std::setw(12) << "Ngay cong"
+              << std::setw(12) << "Tang ca (h)" << std::endl;
+    std::cout << std::string(55, '-') << std::endl;
     for (const auto& cc : dsChamCong) {
-        std::cout << "NV: " << cc.getMaNV() << " | Thang: " << cc.getThang() << "/" << cc.getNam()
-                  << " | Cong: " << cc.getSoNgayCong() << " | Tang ca: " << cc.getSoGioTangCa() << std::endl;
+        std::cout << std::left << std::setw(15) << cc.getMaNV()
+                  << std::left << std::setw(15) << (std::to_string(cc.getThang()) + "/" + std::to_string(cc.getNam()))
+                  << std::right << std::fixed << std::setprecision(2) << std::setw(12) << cc.getSoNgayCong()
+                  << std::right << std::setw(12) << cc.getSoGioTangCa() << std::endl;
     }
 }
 

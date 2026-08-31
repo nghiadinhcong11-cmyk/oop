@@ -1,5 +1,12 @@
 #include "Luong.h"
 #include <iomanip>
+#include <sstream>
+
+static std::string formatDouble(double val, int precision = 2) {
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << val;
+    return out.str();
+}
 
 Luong::Luong() : thang(1), nam(2024), luongCoBan(0), phuCap(0), tienTangCa(0), khauTru(0), luongThucNhan(0) {}
 
@@ -21,10 +28,14 @@ void Luong::hienThiPhieuLuong() const {
 std::string Luong::getMaNV() const { return maNV; }
 int Luong::getThang() const { return thang; }
 int Luong::getNam() const { return nam; }
+double Luong::getLuongCoBan() const { return luongCoBan; }
+double Luong::getPhuCap() const { return phuCap; }
+double Luong::getTienTangCa() const { return tienTangCa; }
+double Luong::getLuongThucNhan() const { return luongThucNhan; }
 
 std::string Luong::serialize() const {
     return maLuong + "|" + maNV + "|" + std::to_string(thang) + "|" + std::to_string(nam) + "|" +
-           std::to_string(luongCoBan) + "|" + std::to_string(phuCap) + "|" +
-           std::to_string(tienTangCa) + "|" + std::to_string(khauTru) + "|" +
-           std::to_string(luongThucNhan);
+           formatDouble(luongCoBan) + "|" + formatDouble(phuCap) + "|" +
+           formatDouble(tienTangCa) + "|" + formatDouble(khauTru) + "|" +
+           formatDouble(luongThucNhan);
 }

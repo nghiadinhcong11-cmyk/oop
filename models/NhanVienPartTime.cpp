@@ -1,5 +1,13 @@
 #include "NhanVienPartTime.h"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+
+static std::string formatDouble(double val, int precision = 2) {
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << val;
+    return out.str();
+}
 
 NhanVienPartTime::NhanVienPartTime() : NhanVien(), luongTheoGio(0) {
     this->loaiNV = "PartTime";
@@ -22,9 +30,9 @@ double NhanVienPartTime::getTienTangCa(const ChamCong& cc) const {
 
 void NhanVienPartTime::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    std::cout << " -> Luong/Gio: " << luongTheoGio << " | PartTime" << std::endl;
+    std::cout << "  " << std::right << std::setw(15) << std::fixed << std::setprecision(2) << luongTheoGio << " (L/h)" << std::endl;
 }
 
 std::string NhanVienPartTime::serialize() const {
-    return NhanVien::serialize() + "|" + std::to_string(luongTheoGio);
+    return NhanVien::serialize() + "|" + formatDouble(luongTheoGio);
 }

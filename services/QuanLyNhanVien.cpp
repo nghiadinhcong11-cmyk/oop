@@ -8,14 +8,16 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <iomanip>
 
 static std::vector<std::string> split(const std::string& s, char delimiter) {
     std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
+    size_t start = 0, end = 0;
+    while ((end = s.find(delimiter, start)) != std::string::npos) {
+        tokens.push_back(s.substr(start, end - start));
+        start = end + 1;
     }
+    tokens.push_back(s.substr(start));
     return tokens;
 }
 
@@ -39,6 +41,14 @@ void QuanLyNhanVien::hienThiDanhSach() const {
         std::cout << "Danh sach nhan vien trong." << std::endl;
         return;
     }
+    std::cout << "\n--- DANH SACH NHAN VIEN ---" << std::endl;
+    std::cout << std::left << std::setw(10) << "Ma NV"
+              << std::setw(25) << "Ho Ten"
+              << std::setw(12) << "Loai NV"
+              << std::right << std::setw(15) << "Luong CB"
+              << "  " << std::left << std::setw(10) << "Phong"
+              << "  " << std::right << std::setw(15) << "Phu cap/L.Gio" << std::endl;
+    std::cout << std::string(95, '-') << std::endl;
     for (const auto& nv : dsNhanVien) {
         nv->hienThiThongTin();
     }

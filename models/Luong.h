@@ -27,6 +27,10 @@ public:
     std::string getMaNV() const;
     int getThang() const;
     int getNam() const;
+    double getLuongCoBan() const;
+    double getPhuCap() const;
+    double getTienTangCa() const;
+    double getLuongThucNhan() const;
 
     std::string serialize() const;
 };

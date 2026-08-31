@@ -4,14 +4,16 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 static std::vector<std::string> splitString(const std::string& s, char delimiter) {
     std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
+    size_t start = 0, end = 0;
+    while ((end = s.find(delimiter, start)) != std::string::npos) {
+        tokens.push_back(s.substr(start, end - start));
+        start = end + 1;
     }
+    tokens.push_back(s.substr(start));
     return tokens;
 }
 
@@ -31,7 +33,11 @@ void QuanLyPhongBan::hienThiDanhSach() const {
         std::cout << "Danh sach phong ban trong." << std::endl;
         return;
     }
-    std::cout << "--- DANH SACH PHONG BAN ---" << std::endl;
+    std::cout << "\n--- DANH SACH PHONG BAN ---" << std::endl;
+    std::cout << std::left << std::setw(10) << "Ma PB"
+              << std::setw(25) << "Ten Phong Ban"
+              << std::setw(20) << "Truong Phong" << std::endl;
+    std::cout << std::string(55, '-') << std::endl;
     for (const auto& pb : dsPhongBan) {
         pb.hienThi();
     }

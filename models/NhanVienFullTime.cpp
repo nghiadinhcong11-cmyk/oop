@@ -1,6 +1,13 @@
 #include "NhanVienFullTime.h"
 #include <iostream>
 #include <iomanip>
+#include <sstream>
+
+static std::string formatDouble(double val, int precision = 2) {
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << val;
+    return out.str();
+}
 
 NhanVienFullTime::NhanVienFullTime() : NhanVien(), phuCap(0), tienTangCa(0) {
     this->loaiNV = "FullTime";
@@ -19,7 +26,7 @@ double NhanVienFullTime::tinhLuong(const ChamCong& cc) const {
 
 void NhanVienFullTime::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    std::cout << " -> Phu cap: " << phuCap << " | FullTime" << std::endl;
+    std::cout << "  " << std::right << std::setw(15) << std::fixed << std::setprecision(2) << phuCap << std::endl;
 }
 
 double NhanVienFullTime::getPhuCap() const { return phuCap; }
@@ -28,7 +35,7 @@ double NhanVienFullTime::getTienTangCa(const ChamCong& cc) const {
 }
 
 std::string NhanVienFullTime::serialize() const {
-    return NhanVien::serialize() + "|" + std::to_string(phuCap);
+    return NhanVien::serialize() + "|" + formatDouble(phuCap);
 }
 
 void NhanVienFullTime::setPhuCap(double phuCap) { this->phuCap = phuCap; }

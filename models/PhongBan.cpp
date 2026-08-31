@@ -1,4 +1,5 @@
 #include "PhongBan.h"
+#include <iomanip>
 
 PhongBan::PhongBan() {}
 
@@ -12,8 +13,9 @@ void PhongBan::setMaPB(std::string maPB) { this->maPB = maPB; }
 void PhongBan::setTenPB(std::string tenPB) { this->tenPB = tenPB; }
 
 void PhongBan::hienThi() const {
-    std::cout << "Ma PB: " << maPB << " | Ten PB: " << tenPB
-              << " | Truong Phong: " << truongPhong << std::endl;
+    std::cout << std::left << std::setw(10) << maPB
+              << std::setw(25) << tenPB
+              << std::setw(20) << truongPhong << std::endl;
 }
 
 std::string PhongBan::serialize() const {

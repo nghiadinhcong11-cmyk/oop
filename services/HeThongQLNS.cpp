@@ -35,10 +35,12 @@ static double getSafeDouble() {
 }
 
 void HeThongQLNS::loadAll() {
+    cout << "Dang tai du lieu..." << endl;
     qlpb.loadFromFile(FILE_PB);
     qlnv.loadFromFile(FILE_NV);
     qlcc.loadFromFile(FILE_CC);
     qll.loadFromFile(FILE_L);
+    cout << "Tai du lieu hoan tat." << endl;
 }
 
 void HeThongQLNS::saveAll() {
@@ -97,19 +99,19 @@ void HeThongQLNS::menuNhanVien() {
         if (choice == 1) qlnv.hienThiDanhSach();
         else if (choice == 2) {
             themNhanVienMoi();
-            saveAll();
+            qlnv.saveToFile(FILE_NV);
             cout << "Da them nhan vien!" << endl;
         }
         else if (choice == 3) {
             string ma; cout << "Nhap ma NV: "; cin >> ma;
             qlnv.suaNhanVien(ma);
-            saveAll();
+            qlnv.saveToFile(FILE_NV);
             cout << "Thanh cong!" << endl;
         }
         else if (choice == 4) {
             string ma; cout << "Nhap ma NV: "; cin >> ma;
             qlnv.xoaNhanVien(ma);
-            saveAll();
+            qlnv.saveToFile(FILE_NV);
             cout << "Da xoa!" << endl;
         }
         else {
@@ -168,7 +170,7 @@ void HeThongQLNS::menuPhongBan() {
         if (choice == 1) qlpb.hienThiDanhSach();
         else if (choice == 2) {
             themPhongBanMoi();
-            saveAll();
+            qlpb.saveToFile(FILE_PB);
         }
         else if (choice == 3) {
             string ma; cout << "Nhap ma PB: "; cin >> ma;
@@ -177,7 +179,7 @@ void HeThongQLNS::menuPhongBan() {
                 throw InvalidInputException("Khong the xoa phong ban dang co nhan vien");
             }
             qlpb.xoaPhongBan(ma);
-            saveAll();
+            qlpb.saveToFile(FILE_PB);
             cout << "Da xoa!" << endl;
         }
         else {
@@ -211,7 +213,7 @@ void HeThongQLNS::menuChamCong() {
         if (choice == 1) qlcc.hienThiDanhSach();
         else if (choice == 2) {
             nhapChamCong();
-            saveAll();
+            qlcc.saveToFile(FILE_CC);
         }
         else {
              cout << "Loi: Lua chon khong hop le. Vui long chon lai" << endl;
@@ -272,7 +274,7 @@ void HeThongQLNS::tinhLuong() {
         cout << "Luu ket qua? (y/n): "; cin >> save;
         if (save == 'y') {
             qll.themLuong(l);
-            saveAll();
+            qll.saveToFile(FILE_L);
             cout << "Da luu!" << endl;
         }
     } catch (const HRMSException& e) {

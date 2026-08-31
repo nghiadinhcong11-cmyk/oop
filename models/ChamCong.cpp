@@ -1,4 +1,12 @@
 #include "ChamCong.h"
+#include <iomanip>
+#include <sstream>
+
+static std::string formatDouble(double val, int precision = 2) {
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << val;
+    return out.str();
+}
 
 ChamCong::ChamCong() : thang(1), nam(2024), soNgayCong(0), soGioTangCa(0) {}
 
@@ -18,5 +26,5 @@ void ChamCong::setSoGioTangCa(double sgtc) { if (sgtc >= 0) soGioTangCa = sgtc; 
 
 std::string ChamCong::serialize() const {
     return maCC + "|" + maNV + "|" + std::to_string(thang) + "|" + std::to_string(nam) + "|" +
-           std::to_string(soNgayCong) + "|" + std::to_string(soGioTangCa);
+           formatDouble(soNgayCong) + "|" + formatDouble(soGioTangCa);
 }

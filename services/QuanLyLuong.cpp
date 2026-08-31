@@ -3,14 +3,16 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 static std::vector<std::string> splitString(const std::string& s, char delimiter) {
     std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
+    size_t start = 0, end = 0;
+    while ((end = s.find(delimiter, start)) != std::string::npos) {
+        tokens.push_back(s.substr(start, end - start));
+        start = end + 1;
     }
+    tokens.push_back(s.substr(start));
     return tokens;
 }
 
@@ -23,15 +25,26 @@ void QuanLyLuong::themLuong(const Luong& l) {
 }
 
 void QuanLyLuong::hienThiBangLuong(int thang, int nam) const {
-    std::cout << "--- BANG LUONG THANG " << thang << "/" << nam << " ---" << std::endl;
+    std::cout << "\n--- BANG LUONG THANG " << thang << "/" << nam << " ---" << std::endl;
+    std::cout << std::left << std::setw(10) << "Ma NV"
+              << std::right << std::setw(12) << "Luong CB"
+              << std::setw(12) << "Phu cap"
+              << std::setw(12) << "Tang ca"
+              << std::setw(15) << "THUC NHAN" << std::endl;
+    std::cout << std::string(65, '-') << std::endl;
+
     bool found = false;
     for (const auto& l : dsLuong) {
         if (l.getThang() == thang && l.getNam() == nam) {
-            l.hienThiPhieuLuong();
+            std::cout << std::left << std::setw(10) << l.getMaNV()
+                      << std::right << std::fixed << std::setprecision(2) << std::setw(12) << l.getLuongCoBan()
+                      << std::right << std::setw(12) << l.getPhuCap()
+                      << std::right << std::setw(12) << l.getTienTangCa()
+                      << std::right << std::setw(15) << l.getLuongThucNhan() << std::endl;
             found = true;
         }
     }
-    if (!found) std::cout << "Khong co du lieu." << std::endl;
+    if (!found) std::cout << "Khong co du lieu cho thang nay." << std::endl;
 }
 
 void QuanLyLuong::hienThiTatCa() const {
@@ -39,8 +52,21 @@ void QuanLyLuong::hienThiTatCa() const {
         std::cout << "Danh sach luong trong." << std::endl;
         return;
     }
+    std::cout << "\n--- BANG LUONG TONG HOP ---" << std::endl;
+    std::cout << std::left << std::setw(10) << "Ma NV"
+              << std::setw(10) << "Thang"
+              << std::right << std::setw(12) << "Luong CB"
+              << std::setw(12) << "Phu cap"
+              << std::setw(12) << "Tang ca"
+              << std::setw(15) << "THUC NHAN" << std::endl;
+    std::cout << std::string(75, '-') << std::endl;
     for (const auto& l : dsLuong) {
-        l.hienThiPhieuLuong();
+        std::cout << std::left << std::setw(10) << l.getMaNV()
+                  << std::left << std::setw(10) << (std::to_string(l.getThang()) + "/" + std::to_string(l.getNam()))
+                  << std::right << std::fixed << std::setprecision(2) << std::setw(12) << l.getLuongCoBan()
+                  << std::right << std::setw(12) << l.getPhuCap()
+                  << std::right << std::setw(12) << l.getTienTangCa()
+                  << std::right << std::setw(15) << l.getLuongThucNhan() << std::endl;
     }
 }
 

@@ -1,5 +1,13 @@
 #include "NhanVienThucTap.h"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+
+static std::string formatDouble(double val, int precision = 2) {
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << val;
+    return out.str();
+}
 
 NhanVienThucTap::NhanVienThucTap() : NhanVien(), troCap(0) {
     this->loaiNV = "ThucTap";
@@ -22,9 +30,9 @@ double NhanVienThucTap::getPhuCap() const {
 
 void NhanVienThucTap::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    std::cout << " -> Tro cap: " << troCap << " | ThucTap" << std::endl;
+    std::cout << "  " << std::right << std::setw(15) << std::fixed << std::setprecision(2) << troCap << std::endl;
 }
 
 std::string NhanVienThucTap::serialize() const {
-    return NhanVien::serialize() + "|" + std::to_string(troCap);
+    return NhanVien::serialize() + "|" + formatDouble(troCap);
 }

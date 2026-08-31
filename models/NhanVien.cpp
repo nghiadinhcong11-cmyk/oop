@@ -1,6 +1,13 @@
 #include "NhanVien.h"
 #include <iostream>
 #include <iomanip>
+#include <sstream>
+
+static std::string formatDouble(double val, int precision = 2) {
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << val;
+    return out.str();
+}
 
 NhanVien::NhanVien() : luongCoBan(0) {}
 
@@ -25,12 +32,15 @@ void NhanVien::setLuongCoBan(double luongCoBan) { this->luongCoBan = luongCoBan;
 void NhanVien::setMaPB(std::string maPB) { this->maPB = maPB; }
 
 void NhanVien::hienThiThongTin() const {
-    std::cout << "Ma NV: " << maNV << " | Ho Ten: " << hoTen << " | Loai: " << loaiNV
-              << " | Luong CB: " << std::fixed << std::setprecision(0) << luongCoBan << std::endl;
+    std::cout << std::left << std::setw(10) << maNV
+              << std::setw(25) << hoTen
+              << std::setw(12) << loaiNV
+              << std::right << std::setw(15) << std::fixed << std::setprecision(2) << luongCoBan
+              << "  " << std::left << std::setw(10) << maPB;
 }
 
 std::string NhanVien::serialize() const {
     return maNV + "|" + hoTen + "|" + ngaySinh + "|" + gioiTinh + "|" +
            soDienThoai + "|" + email + "|" + diaChi + "|" + maPB + "|" +
-           chucVu + "|" + loaiNV + "|" + std::to_string(luongCoBan);
+           chucVu + "|" + loaiNV + "|" + formatDouble(luongCoBan);
 }
