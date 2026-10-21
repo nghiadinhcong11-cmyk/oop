@@ -40,10 +40,8 @@ void QuanLyPhongBan::hienThiDanhSach() const {
         return;
     }
     cout << "\n--- DANH SACH PHONG BAN ---" << endl;
-    cout << "Ma PB"
-              << "Ten Phong Ban"
-              << "Truong Phong" << endl;
-    cout << string(55, '-') << endl;
+    cout << "Ma PB | Ten Phong Ban | Truong Phong" << endl;
+    cout << "------------------------------------" << endl;
     for (int i = 0; i < (dsPhongBan.size()); i++) {
         dsPhongBan[i].hienThi();
     }

@@ -1,5 +1,7 @@
 #include "NhanVienThucTap.h"
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
 
 NhanVienThucTap::NhanVienThucTap() : NhanVien(), troCap(0) {
@@ -32,11 +34,12 @@ double NhanVienThucTap::getPhuCap() const {
 
 void NhanVienThucTap::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    cout << (to_string(troCap) + " (tro cap/gio)") << endl;
+    cout << troCap << " (tro cap/gio)" << endl;
 }
 
 void NhanVienThucTap::hienThiChiTiet() const {
     NhanVien::hienThiChiTiet();
+    cout << fixed << setprecision(0);
     cout << "Tro cap:        " << troCap << endl;
     cout << "---------------------------------" << endl;
 }

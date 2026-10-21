@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <fstream>
 #include <cmath>
+#include <iomanip>
 
 using namespace std;
 
@@ -54,6 +55,7 @@ void QuanLyChamCong::hienThiDanhSach() const {
               << "So ngay cong" << " | "
               << "So gio tang ca" << endl;
     cout << string(90, '-') << endl;
+    cout << fixed << setprecision(0);
     for (int i = 0; i < (dsChamCong.size()); i++) {
         cout << dsChamCong[i].getMaCC() << " | "
                   << dsChamCong[i].getMaNV() << " | "

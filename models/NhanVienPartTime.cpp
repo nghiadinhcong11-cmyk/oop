@@ -1,5 +1,7 @@
 #include "NhanVienPartTime.h"
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
 
 NhanVienPartTime::NhanVienPartTime() : NhanVien(), luongTheoGio(0) {
@@ -32,11 +34,12 @@ double NhanVienPartTime::getTienTangCa(const ChamCong& cc) const {
 
 void NhanVienPartTime::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    cout << (to_string(luongTheoGio) + " (luong/gio)") << endl;
+    cout << luongTheoGio << " (luong/gio)" << endl;
 }
 
 void NhanVienPartTime::hienThiChiTiet() const {
     NhanVien::hienThiChiTiet();
+    cout << fixed << setprecision(0);
     cout << "Luong theo gio: " << luongTheoGio << endl;
     cout << "---------------------------------" << endl;
 }

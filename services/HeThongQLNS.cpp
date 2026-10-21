@@ -4,6 +4,7 @@
 #include "../models/NhanVienThucTap.h"
 #include "../exceptions/Exceptions.h"
 #include <iostream>
+#include <iomanip>
 #include <map>
 
 using namespace std;
@@ -444,6 +445,7 @@ void HeThongQLNS::thongKe() {
     }
 
     cout << "\n--- THONG KE LUONG ---" << endl;
+    cout << fixed << setprecision(2);
     double tongQuyLuong = 0;
     double maxL = -1, minL = -1;
     int countL = 0;

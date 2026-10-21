@@ -1,5 +1,7 @@
 #include "NhanVienFullTime.h"
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
 
 NhanVienFullTime::NhanVienFullTime() : NhanVien(), phuCap(0), tienTangCa(0) {
@@ -35,11 +37,12 @@ double NhanVienFullTime::tinhLuong(const ChamCong& cc) const {
 
 void NhanVienFullTime::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    cout << (to_string(phuCap) + " (phu cap/thang)") << endl;
+    cout << phuCap << " (phu cap/thang)" << endl;
 }
 
 void NhanVienFullTime::hienThiChiTiet() const {
     NhanVien::hienThiChiTiet();
+    cout << fixed << setprecision(0);
     cout << "Phu cap:        " << phuCap << endl;
     cout << "---------------------------------" << endl;
 }

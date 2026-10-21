@@ -1,5 +1,7 @@
 #include "NhanVien.h"
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
 
 NhanVien::NhanVien() : luongCoBan(0) {}
@@ -38,6 +40,7 @@ void NhanVien::setLuongCoBan(double luongCoBan) { this->luongCoBan = luongCoBan;
 void NhanVien::setMaPB(string maPB) { this->maPB = maPB; }
 
 void NhanVien::hienThiThongTin() const {
+    cout << fixed << setprecision(0);
     // Cac lop dan xuat noi cot dac thu vao sau cot chung cuoi cung.
     // Giu nguyen thu tu va do rong nay de moi loai nhan vien thang cot.
     cout << maNV << " | "
@@ -56,6 +59,7 @@ void NhanVien::hienThiThongTin() const {
 }
 
 void NhanVien::hienThiChiTiet() const {
+    cout << fixed << setprecision(0);
     cout << "\n--- CHI TIET NHAN VIEN: " << maNV << " ---" << endl;
     cout << "Ho ten:         " << hoTen << endl;
     cout << "Ngay sinh:      " << ngaySinh << endl;

@@ -2,6 +2,7 @@
 #include "../exceptions/Exceptions.h"
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -45,6 +46,7 @@ void QuanLyLuong::hienThiBangLuong(int thang, int nam) const {
               << "Khau tru" << " | "
               << "Luong thuc nhan" << endl;
     cout << string(177, '-') << endl;
+    cout << fixed << setprecision(0);
 
     bool found = false;
     for (int i = 0; i < (dsLuong.size()); i++) {
@@ -85,6 +87,7 @@ void QuanLyLuong::hienThiTatCa() const {
               << "Khau tru" << " | "
               << "Luong thuc nhan" << endl;
     cout << string(177, '-') << endl;
+    cout << fixed << setprecision(0);
     for (int i = 0; i < (dsLuong.size()); i++) {
         cout << dsLuong[i].getMaLuong() << " | "
                   << dsLuong[i].getMaNV() << " | "
@@ -162,8 +165,8 @@ void QuanLyLuong::loadFromFile(const string& filename) {
                                        stod(cacTruong[7]), stod(cacTruong[8]), stod(cacTruong[9])));
             } else if (cacTruong.size() == 9) {
                  dsLuong.push_back(Luong(cacTruong[0], cacTruong[1], "FullTime", stoi(cacTruong[2]), stoi(cacTruong[3]),
-                                       stod(cacTruong[4]), stod(cacTruong[4]), stod(cacTruong[5]),
-                                       stod(cacTruong[6]), stod(cacTruong[7]), stod(cacTruong[8])));
+                                       stod(cacTruong[4]), stod(cacTruong[5]), stod(cacTruong[6]),
+                                       stod(cacTruong[7]), 0, stod(cacTruong[8])));
             } else {
                 throw DataFormatException(filename + ": dong " + to_string(lineNumber) + " co so truong khong hop le");
             }

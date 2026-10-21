@@ -13,9 +13,7 @@ void PhongBan::setMaPB(string maPB) { this->maPB = maPB; }
 void PhongBan::setTenPB(string tenPB) { this->tenPB = tenPB; }
 
 void PhongBan::hienThi() const {
-    cout << maPB
-              << tenPB
-              << truongPhong << endl;
+    cout << maPB << " | " << tenPB << " | " << truongPhong << endl;
 }
 
 string PhongBan::taoDongDuLieu() const {

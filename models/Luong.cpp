@@ -1,4 +1,6 @@
 #include "Luong.h"
+#include <iomanip>
+
 using namespace std;
 
 Luong::Luong() : thang(1), nam(2024), luongGoc(0), luongCoBan(0), phuCap(0), tienTangCa(0), khauTru(0), luongThucNhan(0) {}
@@ -9,6 +11,7 @@ Luong::Luong(string maLuong, string maNV, string loaiNV, int thang, int nam,
       luongGoc(lg), luongCoBan(lcb), phuCap(pc), tienTangCa(ttc), khauTru(kt), luongThucNhan(ltn) {}
 
 void Luong::hienThiPhieuLuong() const {
+    cout << fixed << setprecision(0);
     cout << "\n--- PHIEU LUONG: " << maLuong << " ---" << endl;
     cout << "Ma NV: " << maNV << " (" << loaiNV << ") | Thang: " << thang << "/" << nam << endl;
 
