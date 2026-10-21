@@ -1,27 +1,29 @@
 #include "NhanVienThucTap.h"
 #include <iostream>
-#include <iomanip>
-#include <sstream>
-
-static std::string formatDouble(double val, int precision = 2) {
-    std::ostringstream out;
-    out << std::fixed << std::setprecision(precision) << val;
-    return out.str();
-}
+using namespace std;
 
 NhanVienThucTap::NhanVienThucTap() : NhanVien(), troCap(0) {
-    this->loaiNV = "ThucTap";
+    this->loaiNV = "Intern";
 }
 
-NhanVienThucTap::NhanVienThucTap(std::string maNV, std::string hoTen, std::string ngaySinh, std::string gioiTinh,
-                                 std::string soDienThoai, std::string email, std::string diaChi,
-                                 std::string maPB, std::string chucVu, double luongCoBan,
+NhanVienThucTap::NhanVienThucTap(string maNV, string hoTen, string ngaySinh, string gioiTinh,
+                                 string soDienThoai, string email, string diaChi,
+                                 string maPB, string chucVu, string ngayVaoLam, double luongCoBan,
                                  double troCap)
-    : NhanVien(maNV, hoTen, ngaySinh, gioiTinh, soDienThoai, email, diaChi, maPB, chucVu, "ThucTap", luongCoBan),
+    : NhanVien(maNV, hoTen, ngaySinh, gioiTinh, soDienThoai, email, diaChi, maPB, chucVu, ngayVaoLam, "Intern", luongCoBan),
       troCap(troCap) {}
 
-double NhanVienThucTap::tinhLuong(const ChamCong& cc) const {
+double NhanVienThucTap::getLuongGoc() const {
     return troCap;
+}
+
+double NhanVienThucTap::getLuongCoBan(const ChamCong& cc) const {
+    // Tinh theo gio (8h/ngay), tro cap o đây đóng vai trò là lương theo giờ
+    return cc.getSoNgayCong() * 8 * troCap;
+}
+
+double NhanVienThucTap::tinhLuong(const ChamCong& cc) const {
+    return getLuongCoBan(cc);
 }
 
 double NhanVienThucTap::getPhuCap() const {
@@ -30,9 +32,15 @@ double NhanVienThucTap::getPhuCap() const {
 
 void NhanVienThucTap::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    std::cout << "  " << std::right << std::setw(15) << std::fixed << std::setprecision(2) << troCap << std::endl;
+    cout << (to_string(troCap) + " (tro cap/gio)") << endl;
 }
 
-std::string NhanVienThucTap::serialize() const {
-    return NhanVien::serialize() + "|" + formatDouble(troCap);
+void NhanVienThucTap::hienThiChiTiet() const {
+    NhanVien::hienThiChiTiet();
+    cout << "Tro cap:        " << troCap << endl;
+    cout << "---------------------------------" << endl;
+}
+
+string NhanVienThucTap::taoDongDuLieu() const {
+    return NhanVien::taoDongDuLieu() + "|" + to_string(troCap);
 }

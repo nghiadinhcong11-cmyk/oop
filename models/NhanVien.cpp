@@ -1,46 +1,77 @@
 #include "NhanVien.h"
 #include <iostream>
-#include <iomanip>
-#include <sstream>
-
-static std::string formatDouble(double val, int precision = 2) {
-    std::ostringstream out;
-    out << std::fixed << std::setprecision(precision) << val;
-    return out.str();
-}
+using namespace std;
 
 NhanVien::NhanVien() : luongCoBan(0) {}
 
-NhanVien::NhanVien(std::string maNV, std::string hoTen, std::string ngaySinh, std::string gioiTinh,
-                   std::string soDienThoai, std::string email, std::string diaChi,
-                   std::string maPB, std::string chucVu, std::string loaiNV, double luongCoBan)
+NhanVien::NhanVien(string maNV, string hoTen, string ngaySinh, string gioiTinh,
+                   string soDienThoai, string email, string diaChi,
+                   string maPB, string chucVu, string ngayVaoLam, string loaiNV, double luongCoBan)
     : maNV(maNV), hoTen(hoTen), ngaySinh(ngaySinh), gioiTinh(gioiTinh),
       soDienThoai(soDienThoai), email(email), diaChi(diaChi),
-      maPB(maPB), chucVu(chucVu), loaiNV(loaiNV), luongCoBan(luongCoBan) {}
+      maPB(maPB), chucVu(chucVu), ngayVaoLam(ngayVaoLam), loaiNV(loaiNV), luongCoBan(luongCoBan) {}
 
 NhanVien::~NhanVien() {}
 
-std::string NhanVien::getMaNV() const { return maNV; }
-std::string NhanVien::getHoTen() const { return hoTen; }
-std::string NhanVien::getLoaiNV() const { return loaiNV; }
-double NhanVien::getLuongCoBan() const { return luongCoBan; }
-std::string NhanVien::getMaPB() const { return maPB; }
+string NhanVien::getMaNV() const { return maNV; }
+string NhanVien::getHoTen() const { return hoTen; }
+string NhanVien::getLoaiNV() const { return loaiNV; }
+string NhanVien::getNgaySinh() const { return ngaySinh; }
+string NhanVien::getGioiTinh() const { return gioiTinh; }
+string NhanVien::getSoDienThoai() const { return soDienThoai; }
+string NhanVien::getEmail() const { return email; }
+string NhanVien::getDiaChi() const { return diaChi; }
+string NhanVien::getMaPB() const { return maPB; }
+string NhanVien::getNgayVaoLam() const { return ngayVaoLam; }
+string NhanVien::getChucVu() const { return chucVu; }
 
-void NhanVien::setMaNV(std::string maNV) { this->maNV = maNV; }
-void NhanVien::setHoTen(std::string hoTen) { this->hoTen = hoTen; }
+void NhanVien::setMaNV(string maNV) { this->maNV = maNV; }
+void NhanVien::setHoTen(string hoTen) { this->hoTen = hoTen; }
+void NhanVien::setNgaySinh(string ngaySinh) { this->ngaySinh = ngaySinh; }
+void NhanVien::setGioiTinh(string gioiTinh) { this->gioiTinh = gioiTinh; }
+void NhanVien::setSoDienThoai(string soDienThoai) { this->soDienThoai = soDienThoai; }
+void NhanVien::setEmail(string email) { this->email = email; }
+void NhanVien::setDiaChi(string diaChi) { this->diaChi = diaChi; }
+void NhanVien::setChucVu(string chucVu) { this->chucVu = chucVu; }
+void NhanVien::setNgayVaoLam(string ngayVaoLam) { this->ngayVaoLam = ngayVaoLam; }
 void NhanVien::setLuongCoBan(double luongCoBan) { this->luongCoBan = luongCoBan; }
-void NhanVien::setMaPB(std::string maPB) { this->maPB = maPB; }
+void NhanVien::setMaPB(string maPB) { this->maPB = maPB; }
 
 void NhanVien::hienThiThongTin() const {
-    std::cout << std::left << std::setw(10) << maNV
-              << std::setw(25) << hoTen
-              << std::setw(12) << loaiNV
-              << std::right << std::setw(15) << std::fixed << std::setprecision(2) << luongCoBan
-              << "  " << std::left << std::setw(10) << maPB;
+    // Cac lop dan xuat noi cot dac thu vao sau cot chung cuoi cung.
+    // Giu nguyen thu tu va do rong nay de moi loai nhan vien thang cot.
+    cout << maNV << " | "
+              << hoTen << " | "
+              << ngaySinh << " | "
+              << gioiTinh << " | "
+              << soDienThoai << " | "
+              << email << " | "
+              << diaChi << " | "
+              << maPB << " | "
+              << chucVu << " | "
+              << ngayVaoLam << " | "
+              << loaiNV << " | "
+              << luongCoBan
+              << " | ";
 }
 
-std::string NhanVien::serialize() const {
+void NhanVien::hienThiChiTiet() const {
+    cout << "\n--- CHI TIET NHAN VIEN: " << maNV << " ---" << endl;
+    cout << "Ho ten:         " << hoTen << endl;
+    cout << "Ngay sinh:      " << ngaySinh << endl;
+    cout << "Gioi tinh:      " << gioiTinh << endl;
+    cout << "So dien thoai:  " << soDienThoai << endl;
+    cout << "Email:          " << email << endl;
+    cout << "Dia chi:        " << diaChi << endl;
+    cout << "Phong ban:      " << maPB << endl;
+    cout << "Chuc vu:        " << chucVu << endl;
+    cout << "Ngay vao lam:   " << ngayVaoLam << endl;
+    cout << "Loai nhan vien: " << loaiNV << endl;
+    cout << "Luong co ban:   " << luongCoBan << endl;
+}
+
+string NhanVien::taoDongDuLieu() const {
     return maNV + "|" + hoTen + "|" + ngaySinh + "|" + gioiTinh + "|" +
            soDienThoai + "|" + email + "|" + diaChi + "|" + maPB + "|" +
-           chucVu + "|" + loaiNV + "|" + formatDouble(luongCoBan);
+           chucVu + "|" + ngayVaoLam + "|" + loaiNV + "|" + to_string(luongCoBan);
 }

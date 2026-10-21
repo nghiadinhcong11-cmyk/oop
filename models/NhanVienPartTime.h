@@ -3,24 +3,29 @@
 
 #include "NhanVien.h"
 
+using namespace std;
+
 class NhanVienPartTime : public NhanVien {
 private:
     double luongTheoGio;
 
 public:
     NhanVienPartTime();
-    NhanVienPartTime(std::string maNV, std::string hoTen, std::string ngaySinh, std::string gioiTinh,
-                     std::string soDienThoai, std::string email, std::string diaChi,
-                     std::string maPB, std::string chucVu, double luongCoBan,
+    NhanVienPartTime(string maNV, string hoTen, string ngaySinh, string gioiTinh,
+                     string soDienThoai, string email, string diaChi,
+                     string maPB, string chucVu, string ngayVaoLam, double luongCoBan,
                      double luongTheoGio);
 
-    double tinhLuong(const ChamCong& cc) const override;
-    void hienThiThongTin() const override;
+    double tinhLuong(const ChamCong& cc) const;
+    double getLuongGoc() const;
+    double getLuongCoBan(const ChamCong& cc) const;
+    void hienThiThongTin() const;
+    void hienThiChiTiet() const;
 
-    // Override
-    double getTienTangCa(const ChamCong& cc) const override;
+    // Ghi de ham tang ca
+    double getTienTangCa(const ChamCong& cc) const;
 
-    std::string serialize() const override;
+    string taoDongDuLieu() const;
 };
 
 #endif // NHANVIENPARTTIME_H

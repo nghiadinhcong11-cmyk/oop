@@ -4,13 +4,17 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 class Luong {
 private:
-    std::string maLuong;
-    std::string maNV;
+    string maLuong;
+    string maNV;
+    string loaiNV;   // Loai nhan vien de hien thi phieu luong dung dinh dang
     int thang;
     int nam;
-    double luongCoBan;
+    double luongGoc;      // Luong goc (FT: Luong thang, PT/TT: Luong/Gio)
+    double luongCoBan;    // Luong thuc te (FT: Sau dieu chinh, PT/TT: Luong tinh theo gio)
     double phuCap;
     double tienTangCa;
     double khauTru;
@@ -18,21 +22,25 @@ private:
 
 public:
     Luong();
-    Luong(std::string maLuong, std::string maNV, int thang, int nam,
-          double lcb, double pc, double ttc, double kt, double ltn);
+    Luong(string maLuong, string maNV, string loaiNV, int thang, int nam,
+          double lg, double lcb, double pc, double ttc, double kt, double ltn);
 
     void hienThiPhieuLuong() const;
 
     // Getters
-    std::string getMaNV() const;
+    string getMaLuong() const;
+    string getMaNV() const;
+    string getLoaiNV() const;
     int getThang() const;
     int getNam() const;
+    double getLuongGoc() const;
     double getLuongCoBan() const;
     double getPhuCap() const;
     double getTienTangCa() const;
+    double getKhauTru() const;
     double getLuongThucNhan() const;
 
-    std::string serialize() const;
+    string taoDongDuLieu() const;
 };
 
 #endif // LUONG_H

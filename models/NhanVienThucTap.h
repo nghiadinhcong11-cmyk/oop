@@ -3,23 +3,28 @@
 
 #include "NhanVien.h"
 
+using namespace std;
+
 class NhanVienThucTap : public NhanVien {
 private:
     double troCap;
 
 public:
     NhanVienThucTap();
-    NhanVienThucTap(std::string maNV, std::string hoTen, std::string ngaySinh, std::string gioiTinh,
-                    std::string soDienThoai, std::string email, std::string diaChi,
-                    std::string maPB, std::string chucVu, double luongCoBan,
+    NhanVienThucTap(string maNV, string hoTen, string ngaySinh, string gioiTinh,
+                    string soDienThoai, string email, string diaChi,
+                    string maPB, string chucVu, string ngayVaoLam, double luongCoBan,
                     double troCap);
 
-    double tinhLuong(const ChamCong& cc) const override;
-    void hienThiThongTin() const override;
+    double tinhLuong(const ChamCong& cc) const;
+    double getLuongGoc() const;
+    double getLuongCoBan(const ChamCong& cc) const;
+    void hienThiThongTin() const;
+    void hienThiChiTiet() const;
 
-    double getPhuCap() const override;
+    double getPhuCap() const;
 
-    std::string serialize() const override;
+    string taoDongDuLieu() const;
 };
 
 #endif // NHANVIENTHUCTAP_H

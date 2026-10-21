@@ -3,18 +3,24 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
-#include <sstream>
-#include <iomanip>
 
-static std::vector<std::string> splitString(const std::string& s, char delimiter) {
-    std::vector<std::string> tokens;
-    size_t start = 0, end = 0;
-    while ((end = s.find(delimiter, start)) != std::string::npos) {
-        tokens.push_back(s.substr(start, end - start));
-        start = end + 1;
+using namespace std;
+
+static vector<string> tachChuoi(string dong, char kyTuNganCach) {
+    vector<string> cacPhan;
+    string phanHienTai = "";
+
+    for (int i = 0; i < dong.length(); i++) {
+        if (dong[i] == kyTuNganCach) {
+            cacPhan.push_back(phanHienTai);
+            phanHienTai = "";
+        } else {
+            phanHienTai += dong[i];
+        }
     }
-    tokens.push_back(s.substr(start));
-    return tokens;
+
+    cacPhan.push_back(phanHienTai);
+    return cacPhan;
 }
 
 void QuanLyPhongBan::themPhongBan(const PhongBan& pb) {
@@ -30,80 +36,85 @@ void QuanLyPhongBan::themPhongBan(const PhongBan& pb) {
 
 void QuanLyPhongBan::hienThiDanhSach() const {
     if (dsPhongBan.empty()) {
-        std::cout << "Danh sach phong ban trong." << std::endl;
+        cout << "Danh sach phong ban trong." << endl;
         return;
     }
-    std::cout << "\n--- DANH SACH PHONG BAN ---" << std::endl;
-    std::cout << std::left << std::setw(10) << "Ma PB"
-              << std::setw(25) << "Ten Phong Ban"
-              << std::setw(20) << "Truong Phong" << std::endl;
-    std::cout << std::string(55, '-') << std::endl;
-    for (const auto& pb : dsPhongBan) {
-        pb.hienThi();
+    cout << "\n--- DANH SACH PHONG BAN ---" << endl;
+    cout << "Ma PB"
+              << "Ten Phong Ban"
+              << "Truong Phong" << endl;
+    cout << string(55, '-') << endl;
+    for (int i = 0; i < (dsPhongBan.size()); i++) {
+        dsPhongBan[i].hienThi();
     }
 }
 
-PhongBan* QuanLyPhongBan::timPhongBan(std::string maPB) {
-    for (auto& pb : dsPhongBan) {
-        if (pb.getMaPB() == maPB) return &pb;
+PhongBan* QuanLyPhongBan::timPhongBan(string maPB) {
+    for (int i = 0; i < (dsPhongBan.size()); i++) {
+        if (dsPhongBan[i].getMaPB() == maPB) return &dsPhongBan[i];
     }
     return nullptr;
 }
 
-bool QuanLyPhongBan::suaPhongBan(std::string maPB) {
+bool QuanLyPhongBan::suaPhongBan(string maPB) {
     PhongBan* pb = timPhongBan(maPB);
     if (!pb) throw NotFoundException("Khong tim thay phong ban " + maPB);
 
-    std::string ten;
-    std::cout << "Nhap ten phong ban moi: ";
-    std::getline(std::cin >> std::ws, ten);
+    string ten;
+    cout << "Nhap ten phong ban moi: ";
+    getline(cin >> ws, ten);
     if (ten.empty()) throw InvalidInputException("Ten phong ban khong duoc de trong");
     pb->setTenPB(ten);
     return true;
 }
 
-bool QuanLyPhongBan::xoaPhongBan(std::string maPB) {
-    auto it = std::remove_if(dsPhongBan.begin(), dsPhongBan.end(),
-        [&maPB](const PhongBan& pb) {
-            return pb.getMaPB() == maPB;
-        });
-
-    if (it != dsPhongBan.end()) {
-        dsPhongBan.erase(it, dsPhongBan.end());
-        return true;
+bool QuanLyPhongBan::xoaPhongBan(string maPB) {
+    for (int i = 0; i < dsPhongBan.size(); i++) {
+        if (dsPhongBan[i].getMaPB() == maPB) {
+            dsPhongBan.erase(dsPhongBan.begin() + i);
+            return true;
+        }
     }
     throw NotFoundException("Khong tim thay phong ban " + maPB);
 }
 
-const std::vector<PhongBan>& QuanLyPhongBan::getDanhSach() const {
+const vector<PhongBan>& QuanLyPhongBan::getDanhSach() const {
     return dsPhongBan;
 }
 
-void QuanLyPhongBan::saveToFile(const std::string& filename) const {
-    std::ofstream f(filename);
-    if (f.is_open()) {
-        for (const auto& pb : dsPhongBan) {
-            f << pb.serialize() << std::endl;
-        }
-        f.close();
+void QuanLyPhongBan::saveToFile(const string& filename) const {
+    ofstream f(filename);
+    if (!f.is_open()) {
+        throw FileException("Khong the mo file de ghi: " + filename);
+    }
+    for (int i = 0; i < (dsPhongBan.size()); i++) {
+        f << dsPhongBan[i].taoDongDuLieu() << endl;
+        if (!f) throw FileException("Khong the ghi du lieu vao: " + filename);
     }
 }
 
-void QuanLyPhongBan::loadFromFile(const std::string& filename) {
-    std::ifstream f(filename);
-    if (!f.is_open()) return;
+void QuanLyPhongBan::loadFromFile(const string& filename) {
+    ifstream f(filename);
+    if (!f.is_open()) {
+        throw FileException("Khong the mo file de doc: " + filename);
+    }
 
     dsPhongBan.clear();
-    std::string line;
-    while (std::getline(f, line)) {
+    string line;
+    int lineNumber = 0;
+    while (getline(f, line)) {
+        ++lineNumber;
         try {
             if (line.empty()) continue;
-            auto tokens = splitString(line, '|');
-            if (tokens.size() >= 4) {
-                dsPhongBan.push_back(PhongBan(tokens[0], tokens[1], tokens[2], tokens[3]));
+            vector<string> cacTruong = tachChuoi(line, '|');
+            if (cacTruong.size() != 4) {
+                throw DataFormatException(filename + ": dong " + to_string(lineNumber) + " phai co 4 truong");
             }
-        } catch (...) {
-            continue;
+            themPhongBan(PhongBan(cacTruong[0], cacTruong[1], cacTruong[2], cacTruong[3]));
+        } catch (const HRMSException&) {
+            throw;
+        } catch (const exception& e) {
+            throw DataFormatException(filename + ": dong " + to_string(lineNumber) + " - " + layNoiDungLoi(e));
         }
     }
     f.close();

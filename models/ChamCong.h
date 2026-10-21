@@ -3,10 +3,12 @@
 
 #include <string>
 
+using namespace std;
+
 class ChamCong {
 private:
-    std::string maCC;
-    std::string maNV;
+    string maCC;
+    string maNV;
     int thang;
     int nam;
     double soNgayCong;
@@ -14,11 +16,11 @@ private:
 
 public:
     ChamCong();
-    ChamCong(std::string maCC, std::string maNV, int thang, int nam, double soNgayCong, double soGioTangCa);
+    ChamCong(string maCC, string maNV, int thang, int nam, double soNgayCong, double soGioTangCa);
 
     // Getters
-    std::string getMaCC() const;
-    std::string getMaNV() const;
+    string getMaCC() const;
+    string getMaNV() const;
     int getThang() const;
     int getNam() const;
     double getSoNgayCong() const;
@@ -29,7 +31,7 @@ public:
     void setSoNgayCong(double snc);
     void setSoGioTangCa(double sgtc);
 
-    std::string serialize() const;
+    string taoDongDuLieu() const;
 };
 
 #endif // CHAMCONG_H

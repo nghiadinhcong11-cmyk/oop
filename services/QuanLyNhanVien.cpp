@@ -7,127 +7,171 @@
 #include <algorithm>
 #include <fstream>
 #include <vector>
-#include <sstream>
-#include <iomanip>
+#include <cmath>
 
-static std::vector<std::string> split(const std::string& s, char delimiter) {
-    std::vector<std::string> tokens;
-    size_t start = 0, end = 0;
-    while ((end = s.find(delimiter, start)) != std::string::npos) {
-        tokens.push_back(s.substr(start, end - start));
-        start = end + 1;
+using namespace std;
+
+static vector<string> tachChuoi(string dong, char kyTuNganCach) {
+    vector<string> cacPhan;
+    string phanHienTai = "";
+
+    for (int i = 0; i < dong.length(); i++) {
+        if (dong[i] == kyTuNganCach) {
+            cacPhan.push_back(phanHienTai);
+            phanHienTai = "";
+        } else {
+            phanHienTai += dong[i];
+        }
     }
-    tokens.push_back(s.substr(start));
-    return tokens;
+
+    cacPhan.push_back(phanHienTai);
+    return cacPhan;
 }
 
-bool QuanLyNhanVien::themNhanVien(std::unique_ptr<NhanVien> nv) {
+bool QuanLyNhanVien::themNhanVien(unique_ptr<NhanVien> nv) {
     if (nv->getMaNV().empty()) throw InvalidInputException("Ma nhan vien khong duoc de trong");
     if (nv->getHoTen().empty()) throw InvalidInputException("Ho ten khong duoc de trong");
 
-    // Yeu cau moi: Luong co ban phai lon hon 0 cho FullTime, cac loai khac co the bang 0 tuy nghiep vu
-    // Nhung theo yeu cau chung cua user: Luong co ban > 0
-    if (nv->getLuongCoBan() <= 0 && nv->getLoaiNV() == "FullTime") throw InvalidInputException("Luong co ban phai lon hon 0");
+    // getLuongGoc() là mức cấu hình đầu vào của từng loại nhân viên:
+    // lương tháng Full-time, lương giờ Part-time hoặc trợ cấp giờ Intern.
+    if (!isfinite(nv->getLuongGoc()) || nv->getLuongGoc() <= 0) {
+        throw InvalidInputException("Muc luong hoac muc luong theo gio phai lon hon 0");
+    }
 
     if (timTheoMa(nv->getMaNV()) != nullptr) {
         throw DuplicateException("Ma nhan vien " + nv->getMaNV() + " da ton tai");
     }
-    dsNhanVien.push_back(std::move(nv));
+    dsNhanVien.push_back(move(nv));
     return true;
 }
 
 void QuanLyNhanVien::hienThiDanhSach() const {
     if (dsNhanVien.empty()) {
-        std::cout << "Danh sach nhan vien trong." << std::endl;
+        cout << "Danh sach nhan vien trong." << endl;
         return;
     }
-    std::cout << "\n--- DANH SACH NHAN VIEN ---" << std::endl;
-    std::cout << std::left << std::setw(10) << "Ma NV"
-              << std::setw(25) << "Ho Ten"
-              << std::setw(12) << "Loai NV"
-              << std::right << std::setw(15) << "Luong CB"
-              << "  " << std::left << std::setw(10) << "Phong"
-              << "  " << std::right << std::setw(15) << "Phu cap/L.Gio" << std::endl;
-    std::cout << std::string(95, '-') << std::endl;
-    for (const auto& nv : dsNhanVien) {
-        nv->hienThiThongTin();
+    cout << "\n--- DANH SACH NHAN VIEN ---" << endl;
+    cout << "Ma NV" << " | "
+              << "Ho ten" << " | "
+              << "Ngay sinh" << " | "
+              << "GT" << " | "
+              << "So dien thoai" << " | "
+              << "Email" << " | "
+              << "Dia chi" << " | "
+              << "Ma PB" << " | "
+              << "Chuc vu" << " | "
+              << "Ngay vao lam" << " | "
+              << "Loai NV" << " | "
+              << "Luong CB" << " | "
+              << "Phu cap/L.Gio" << endl;
+    cout << string(231, '-') << endl;
+    for (int i = 0; i < (dsNhanVien.size()); i++) {
+        dsNhanVien[i]->hienThiThongTin();
     }
 }
 
-bool QuanLyNhanVien::suaNhanVien(std::string maNV) {
+bool QuanLyNhanVien::suaNhanVien(string maNV) {
     NhanVien* nv = timTheoMa(maNV);
     if (!nv) throw NotFoundException("Khong tim thay nhan vien " + maNV);
 
-    std::string ten;
+    string input;
     double luong;
-    std::cout << "Nhap ten moi: ";
-    std::getline(std::cin >> std::ws, ten);
-    if (ten.empty()) throw InvalidInputException("Ho ten khong duoc de trong");
 
-    std::cout << "Nhap luong co ban moi: ";
-    if (!(std::cin >> luong)) {
-        std::cin.clear();
-        std::cin.ignore(1000, '\n');
-        throw InvalidInputException("Phai nhap vao mot con so");
+    cout << "Nhap ho ten moi (Enter de giu nguyen): ";
+    getline(cin >> ws, input);
+    if (!input.empty()) nv->setHoTen(input);
+
+    cout << "Nhap ngay sinh moi (dd/mm/yyyy - Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setNgaySinh(input);
+
+    cout << "Nhap gioi tinh moi (Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setGioiTinh(input);
+
+    cout << "Nhap SDT moi (Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setSoDienThoai(input);
+
+    cout << "Nhap Email moi (Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setEmail(input);
+
+    cout << "Nhap Dia chi moi (Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setDiaChi(input);
+
+    cout << "Nhap Chuc vu moi (Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setChucVu(input);
+
+    cout << "Nhap Ngay vao lam moi (yyyy-mm-dd - Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setNgayVaoLam(input);
+
+    cout << "Nhap ma Phong Ban moi (Enter de giu nguyen): ";
+    getline(cin, input);
+    if (!input.empty()) nv->setMaPB(input);
+
+    cout << "Nhap luong co ban moi (Nhap 0 de giu nguyen): ";
+    if (cin >> luong) {
+        if (luong > 0) nv->setLuongCoBan(luong);
+    } else {
+        cin.clear();
+        cin.ignore(1000, '\n');
     }
-    if (luong <= 0 && nv->getLoaiNV() == "FullTime") throw InvalidInputException("Luong co ban phai lon hon 0");
 
-    nv->setHoTen(ten);
-    nv->setLuongCoBan(luong);
     return true;
 }
 
-bool QuanLyNhanVien::xoaNhanVien(std::string maNV) {
-    auto it = std::remove_if(dsNhanVien.begin(), dsNhanVien.end(),
-        [&maNV](const std::unique_ptr<NhanVien>& nv) {
-            return nv->getMaNV() == maNV;
-        });
-
-    if (it != dsNhanVien.end()) {
-        dsNhanVien.erase(it, dsNhanVien.end());
-        return true;
+bool QuanLyNhanVien::xoaNhanVien(string maNV) {
+    for (int i = 0; i < dsNhanVien.size(); i++) {
+        if (dsNhanVien[i]->getMaNV() == maNV) {
+            dsNhanVien.erase(dsNhanVien.begin() + i);
+            return true;
+        }
     }
     throw NotFoundException("Khong tim thay nhan vien " + maNV);
 }
 
-NhanVien* QuanLyNhanVien::timTheoMa(std::string maNV) const {
-    for (const auto& nv : dsNhanVien) {
-        if (nv->getMaNV() == maNV) return nv.get();
+NhanVien* QuanLyNhanVien::timTheoMa(string maNV) const {
+    for (int i = 0; i < (dsNhanVien.size()); i++) {
+        if (dsNhanVien[i]->getMaNV() == maNV) return dsNhanVien[i].get();
     }
     return nullptr;
 }
 
-std::vector<NhanVien*> QuanLyNhanVien::timTheoTen(std::string ten) const {
-    std::vector<NhanVien*> ketQua;
-    for (const auto& nv : dsNhanVien) {
-        if (nv->getHoTen().find(ten) != std::string::npos) {
-            ketQua.push_back(nv.get());
+vector<NhanVien*> QuanLyNhanVien::timTheoTen(string ten) const {
+    vector<NhanVien*> ketQua;
+    for (int i = 0; i < (dsNhanVien.size()); i++) {
+        if (dsNhanVien[i]->getHoTen().find(ten) != string::npos) {
+            ketQua.push_back(dsNhanVien[i].get());
         }
     }
     return ketQua;
 }
 
-std::vector<NhanVien*> QuanLyNhanVien::timTheoPhongBan(std::string maPB) const {
-    std::vector<NhanVien*> ketQua;
-    for (const auto& nv : dsNhanVien) {
-        if (nv->getMaPB() == maPB) {
-            ketQua.push_back(nv.get());
+vector<NhanVien*> QuanLyNhanVien::timTheoPhongBan(string maPB) const {
+    vector<NhanVien*> ketQua;
+    for (int i = 0; i < (dsNhanVien.size()); i++) {
+        if (dsNhanVien[i]->getMaPB() == maPB) {
+            ketQua.push_back(dsNhanVien[i].get());
         }
     }
     return ketQua;
 }
 
-std::vector<NhanVien*> QuanLyNhanVien::timTheoLoai(std::string loai) const {
-    std::vector<NhanVien*> ketQua;
-    for (const auto& nv : dsNhanVien) {
-        if (nv->getLoaiNV() == loai) {
-            ketQua.push_back(nv.get());
+vector<NhanVien*> QuanLyNhanVien::timTheoLoai(string loai) const {
+    vector<NhanVien*> ketQua;
+    for (int i = 0; i < (dsNhanVien.size()); i++) {
+        if (dsNhanVien[i]->getLoaiNV() == loai) {
+            ketQua.push_back(dsNhanVien[i].get());
         }
     }
     return ketQua;
 }
 
-const std::vector<std::unique_ptr<NhanVien>>& QuanLyNhanVien::getDanhSach() const {
+const vector<unique_ptr<NhanVien>>& QuanLyNhanVien::getDanhSach() const {
     return dsNhanVien;
 }
 
@@ -135,53 +179,66 @@ int QuanLyNhanVien::getSoLuong() const {
     return dsNhanVien.size();
 }
 
-void QuanLyNhanVien::saveToFile(const std::string& filename) const {
-    std::ofstream f(filename);
-    if (f.is_open()) {
-        for (const auto& nv : dsNhanVien) {
-            f << nv->serialize() << std::endl;
-        }
-        f.close();
+void QuanLyNhanVien::saveToFile(const string& filename) const {
+    ofstream f(filename);
+    if (!f.is_open()) {
+        throw FileException("Khong the mo file de ghi: " + filename);
+    }
+    for (int i = 0; i < (dsNhanVien.size()); i++) {
+        f << dsNhanVien[i]->taoDongDuLieu() << endl;
+        if (!f) throw FileException("Khong the ghi du lieu vao: " + filename);
     }
 }
 
-void QuanLyNhanVien::loadFromFile(const std::string& filename) {
-    std::ifstream f(filename);
-    if (!f.is_open()) return;
+void QuanLyNhanVien::loadFromFile(const string& filename) {
+    ifstream f(filename);
+    if (!f.is_open()) {
+        throw FileException("Khong the mo file de doc: " + filename);
+    }
 
     dsNhanVien.clear();
-    std::string line;
-    while (std::getline(f, line)) {
+    string line;
+    int lineNumber = 0;
+    while (getline(f, line)) {
+        ++lineNumber;
         try {
             if (line.empty()) continue;
-            auto tokens = split(line, '|');
-            if (tokens.size() < 11) continue;
-
-            std::string ma = tokens[0];
-            std::string ten = tokens[1];
-            std::string ns = tokens[2];
-            std::string gt = tokens[3];
-            std::string sdt = tokens[4];
-            std::string email = tokens[5];
-            std::string dc = tokens[6];
-            std::string mapb = tokens[7];
-            std::string cv = tokens[8];
-            std::string loai = tokens[9];
-            double lcb = std::stod(tokens[10]);
-
-            if (loai == "FullTime" && tokens.size() >= 12) {
-                double pc = std::stod(tokens[11]);
-                dsNhanVien.push_back(std::make_unique<NhanVienFullTime>(ma, ten, ns, gt, sdt, email, dc, mapb, cv, lcb, pc, 0));
-            } else if (loai == "PartTime" && tokens.size() >= 12) {
-                double ltg = std::stod(tokens[11]);
-                dsNhanVien.push_back(std::make_unique<NhanVienPartTime>(ma, ten, ns, gt, sdt, email, dc, mapb, cv, lcb, ltg));
-            } else if (loai == "ThucTap" && tokens.size() >= 12) {
-                double tc = std::stod(tokens[11]);
-                dsNhanVien.push_back(std::make_unique<NhanVienThucTap>(ma, ten, ns, gt, sdt, email, dc, mapb, cv, lcb, tc));
+            vector<string> cacTruong = tachChuoi(line, '|');
+            if (cacTruong.size() < 13) {
+                throw DataFormatException(filename + ": dong " + to_string(lineNumber) + " thieu truong");
             }
-        } catch (...) {
-            // Khong crash neu du lieu file loi
-            continue;
+
+            string ma = cacTruong[0];
+            string ten = cacTruong[1];
+            string ns = cacTruong[2];
+            string gt = cacTruong[3];
+            string sdt = cacTruong[4];
+            string email = cacTruong[5];
+            string dc = cacTruong[6];
+            string mapb = cacTruong[7];
+            string cv = cacTruong[8];
+            string nvl = cacTruong[9];
+            string loai = cacTruong[10];
+            double lcb = stod(cacTruong[11]);
+            unique_ptr<NhanVien> parsed;
+
+            if (loai == "Full-time" && cacTruong.size() >= 13) {
+                double pc = stod(cacTruong[12]);
+                parsed = make_unique<NhanVienFullTime>(ma, ten, ns, gt, sdt, email, dc, mapb, cv, nvl, lcb, pc, 0);
+            } else if (loai == "Part-time" && cacTruong.size() >= 13) {
+                double ltg = stod(cacTruong[12]);
+                parsed = make_unique<NhanVienPartTime>(ma, ten, ns, gt, sdt, email, dc, mapb, cv, nvl, lcb, ltg);
+            } else if (loai == "Intern" && cacTruong.size() >= 13) {
+                double tc = stod(cacTruong[12]);
+                parsed = make_unique<NhanVienThucTap>(ma, ten, ns, gt, sdt, email, dc, mapb, cv, nvl, lcb, tc);
+            } else {
+                throw DataFormatException(filename + ": dong " + to_string(lineNumber) + " co loai nhan vien khong hop le");
+            }
+            themNhanVien(move(parsed));
+        } catch (const HRMSException&) {
+            throw;
+        } catch (const exception& e) {
+            throw DataFormatException(filename + ": dong loi - " + layNoiDungLoi(e));
         }
     }
     f.close();

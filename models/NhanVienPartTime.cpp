@@ -1,27 +1,29 @@
 #include "NhanVienPartTime.h"
 #include <iostream>
-#include <iomanip>
-#include <sstream>
-
-static std::string formatDouble(double val, int precision = 2) {
-    std::ostringstream out;
-    out << std::fixed << std::setprecision(precision) << val;
-    return out.str();
-}
+using namespace std;
 
 NhanVienPartTime::NhanVienPartTime() : NhanVien(), luongTheoGio(0) {
-    this->loaiNV = "PartTime";
+    this->loaiNV = "Part-time";
 }
 
-NhanVienPartTime::NhanVienPartTime(std::string maNV, std::string hoTen, std::string ngaySinh, std::string gioiTinh,
-                                   std::string soDienThoai, std::string email, std::string diaChi,
-                                   std::string maPB, std::string chucVu, double luongCoBan,
+NhanVienPartTime::NhanVienPartTime(string maNV, string hoTen, string ngaySinh, string gioiTinh,
+                                   string soDienThoai, string email, string diaChi,
+                                   string maPB, string chucVu, string ngayVaoLam, double luongCoBan,
                                    double luongTheoGio)
-    : NhanVien(maNV, hoTen, ngaySinh, gioiTinh, soDienThoai, email, diaChi, maPB, chucVu, "PartTime", luongCoBan),
+    : NhanVien(maNV, hoTen, ngaySinh, gioiTinh, soDienThoai, email, diaChi, maPB, chucVu, ngayVaoLam, "Part-time", luongCoBan),
       luongTheoGio(luongTheoGio) {}
 
+double NhanVienPartTime::getLuongGoc() const {
+    return luongTheoGio;
+}
+
+double NhanVienPartTime::getLuongCoBan(const ChamCong& cc) const {
+    // Luong tinh theo gio cho PartTime: (Số ngày công * 8 * Mức lương giờ)
+    return cc.getSoNgayCong() * 8 * luongTheoGio;
+}
+
 double NhanVienPartTime::tinhLuong(const ChamCong& cc) const {
-    return (cc.getSoNgayCong() * 8 * luongTheoGio) + getTienTangCa(cc);
+    return getLuongCoBan(cc) + getTienTangCa(cc);
 }
 
 double NhanVienPartTime::getTienTangCa(const ChamCong& cc) const {
@@ -30,9 +32,15 @@ double NhanVienPartTime::getTienTangCa(const ChamCong& cc) const {
 
 void NhanVienPartTime::hienThiThongTin() const {
     NhanVien::hienThiThongTin();
-    std::cout << "  " << std::right << std::setw(15) << std::fixed << std::setprecision(2) << luongTheoGio << " (L/h)" << std::endl;
+    cout << (to_string(luongTheoGio) + " (luong/gio)") << endl;
 }
 
-std::string NhanVienPartTime::serialize() const {
-    return NhanVien::serialize() + "|" + formatDouble(luongTheoGio);
+void NhanVienPartTime::hienThiChiTiet() const {
+    NhanVien::hienThiChiTiet();
+    cout << "Luong theo gio: " << luongTheoGio << endl;
+    cout << "---------------------------------" << endl;
+}
+
+string NhanVienPartTime::taoDongDuLieu() const {
+    return NhanVien::taoDongDuLieu() + "|" + to_string(luongTheoGio);
 }

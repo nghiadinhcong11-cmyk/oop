@@ -4,27 +4,29 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 class PhongBan {
 private:
-    std::string maPB;
-    std::string tenPB;
-    std::string truongPhong;
-    std::string moTa;
+    string maPB;
+    string tenPB;
+    string truongPhong;
+    string moTa;
 
 public:
     PhongBan();
-    PhongBan(std::string maPB, std::string tenPB, std::string truongPhong, std::string moTa);
+    PhongBan(string maPB, string tenPB, string truongPhong, string moTa);
 
     // Getters
-    std::string getMaPB() const;
-    std::string getTenPB() const;
+    string getMaPB() const;
+    string getTenPB() const;
 
     // Setters
-    void setMaPB(std::string maPB);
-    void setTenPB(std::string tenPB);
+    void setMaPB(string maPB);
+    void setTenPB(string tenPB);
 
     void hienThi() const;
-    std::string serialize() const;
+    string taoDongDuLieu() const;
 };
 
 #endif // PHONGBAN_H

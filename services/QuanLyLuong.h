@@ -4,19 +4,22 @@
 #include "../models/Luong.h"
 #include <vector>
 
+using namespace std;
+
 class QuanLyLuong {
 private:
-    std::vector<Luong> dsLuong;
+    vector<Luong> dsLuong;
 
 public:
     void themLuong(const Luong& l);
     void hienThiBangLuong(int thang, int nam) const;
     void hienThiTatCa() const;
-    Luong* timLuong(std::string maNV, int thang, int nam);
-    std::vector<Luong*> timLuongTheoNhanVien(std::string maNV);
+    Luong* timLuong(string maNV, int thang, int nam);
+    vector<Luong*> timLuongTheoNhanVien(string maNV);
+    const vector<Luong>& getDanhSach() const;
 
-    void saveToFile(const std::string& filename) const;
-    void loadFromFile(const std::string& filename);
+    void saveToFile(const string& filename) const;
+    void loadFromFile(const string& filename);
 };
 
 #endif // QUANLYLUONG_H

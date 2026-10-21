@@ -5,39 +5,58 @@
 
 #include "ChamCong.h"
 
+using namespace std;
+
 class NhanVien {
 protected:
-    std::string maNV;
-    std::string hoTen;
-    std::string ngaySinh;
-    std::string gioiTinh;
-    std::string soDienThoai;
-    std::string email;
-    std::string diaChi;
-    std::string maPB;
-    std::string chucVu;
-    std::string loaiNV;
+    string maNV;
+    string hoTen;
+    string ngaySinh;
+    string gioiTinh;
+    string soDienThoai;
+    string email;
+    string diaChi;
+    string maPB;
+    string chucVu;
+    string ngayVaoLam;
+    string loaiNV;
     double luongCoBan;
 
 public:
     NhanVien();
-    NhanVien(std::string maNV, std::string hoTen, std::string ngaySinh, std::string gioiTinh,
-             std::string soDienThoai, std::string email, std::string diaChi,
-             std::string maPB, std::string chucVu, std::string loaiNV, double luongCoBan);
+    NhanVien(string maNV, string hoTen, string ngaySinh, string gioiTinh,
+             string soDienThoai, string email, string diaChi,
+             string maPB, string chucVu, string ngayVaoLam, string loaiNV, double luongCoBan);
     virtual ~NhanVien();
 
     // Getters
-    std::string getMaNV() const;
-    std::string getHoTen() const;
-    std::string getLoaiNV() const;
-    double getLuongCoBan() const;
-    std::string getMaPB() const;
+    string getMaNV() const;
+    string getHoTen() const;
+    string getLoaiNV() const;
+    string getNgaySinh() const;
+    string getGioiTinh() const;
+    string getSoDienThoai() const;
+    string getEmail() const;
+    string getDiaChi() const;
+    virtual double getLuongGoc() const = 0;
+    virtual double getLuongCoBan(const ChamCong& cc) const = 0;
+    string getMaPB() const;
 
     // Setters
-    void setMaNV(std::string maNV);
-    void setHoTen(std::string hoTen);
+    void setMaNV(string maNV);
+    void setHoTen(string hoTen);
+    void setNgaySinh(string ngaySinh);
+    void setGioiTinh(string gioiTinh);
+    void setSoDienThoai(string soDienThoai);
+    void setEmail(string email);
+    void setDiaChi(string diaChi);
+    void setChucVu(string chucVu);
+    void setNgayVaoLam(string ngayVaoLam);
     void setLuongCoBan(double luongCoBan);
-    void setMaPB(std::string maPB);
+    void setMaPB(string maPB);
+
+    string getNgayVaoLam() const;
+    string getChucVu() const;
 
     // Pure virtual function - bay gio nhan vao ChamCong
     virtual double tinhLuong(const ChamCong& cc) const = 0;
@@ -48,9 +67,10 @@ public:
 
     // Display basic info
     virtual void hienThiThongTin() const;
+    virtual void hienThiChiTiet() const;
 
     // Serialization for File I/O
-    virtual std::string serialize() const;
+    virtual string taoDongDuLieu() const;
 };
 
 #endif // NHANVIEN_H

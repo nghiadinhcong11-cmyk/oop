@@ -1,41 +1,56 @@
 #include "Luong.h"
-#include <iomanip>
-#include <sstream>
+using namespace std;
 
-static std::string formatDouble(double val, int precision = 2) {
-    std::ostringstream out;
-    out << std::fixed << std::setprecision(precision) << val;
-    return out.str();
-}
+Luong::Luong() : thang(1), nam(2024), luongGoc(0), luongCoBan(0), phuCap(0), tienTangCa(0), khauTru(0), luongThucNhan(0) {}
 
-Luong::Luong() : thang(1), nam(2024), luongCoBan(0), phuCap(0), tienTangCa(0), khauTru(0), luongThucNhan(0) {}
-
-Luong::Luong(std::string maLuong, std::string maNV, int thang, int nam,
-              double lcb, double pc, double ttc, double kt, double ltn)
-    : maLuong(maLuong), maNV(maNV), thang(thang), nam(nam),
-      luongCoBan(lcb), phuCap(pc), tienTangCa(ttc), khauTru(kt), luongThucNhan(ltn) {}
+Luong::Luong(string maLuong, string maNV, string loaiNV, int thang, int nam,
+              double lg, double lcb, double pc, double ttc, double kt, double ltn)
+    : maLuong(maLuong), maNV(maNV), loaiNV(loaiNV), thang(thang), nam(nam),
+      luongGoc(lg), luongCoBan(lcb), phuCap(pc), tienTangCa(ttc), khauTru(kt), luongThucNhan(ltn) {}
 
 void Luong::hienThiPhieuLuong() const {
-    std::cout << "--- PHIEU LUONG: " << maLuong << " ---" << std::endl;
-    std::cout << "Ma NV: " << maNV << " | Thang: " << thang << "/" << nam << std::endl;
-    std::cout << "Luong CB: " << std::fixed << std::setprecision(0) << luongCoBan << std::endl;
-    std::cout << "Phu cap: " << phuCap << " | Tang ca: " << tienTangCa << std::endl;
-    std::cout << "Khau tru: " << khauTru << std::endl;
-    std::cout << ">> THUC NHAN: " << luongThucNhan << std::endl;
-    std::cout << "---------------------------" << std::endl;
+    cout << "\n--- PHIEU LUONG: " << maLuong << " ---" << endl;
+    cout << "Ma NV: " << maNV << " (" << loaiNV << ") | Thang: " << thang << "/" << nam << endl;
+
+
+    if (loaiNV == "FullTime" || loaiNV == "Full-time") {
+        cout << "Luong co ban:           " << luongGoc << endl;
+        double dieuChinh = luongCoBan - luongGoc;
+        cout << "Dieu chinh ngay cong:   " << dieuChinh << endl;
+        cout << "Luong CB thuc te:       " << luongCoBan << endl;
+    } else if (loaiNV == "PartTime" || loaiNV == "Part-time") {
+        cout << "Muc luong gio:          " << luongGoc << endl;
+        cout << "Luong theo gio:         " << luongCoBan << endl;
+    } else if (loaiNV == "ThucTap" || loaiNV == "Intern") {
+        cout << "Muc tro cap/gio:        " << luongGoc << endl;
+        cout << "Tien tro cap:           " << luongCoBan << endl;
+    } else {
+        cout << "Luong co ban:           " << luongCoBan << endl;
+    }
+
+    cout << "Phu cap:                " << phuCap << endl;
+    cout << "Tien tang ca:           " << tienTangCa << endl;
+    cout << "Khau tru:               " << -khauTru << endl;
+    cout << string(40, '-') << endl;
+    cout << ">> THUC NHAN:           " << luongThucNhan << endl;
+    cout << "----------------------------------------" << endl;
 }
 
-std::string Luong::getMaNV() const { return maNV; }
+string Luong::getMaLuong() const { return maLuong; }
+string Luong::getMaNV() const { return maNV; }
+string Luong::getLoaiNV() const { return loaiNV; }
 int Luong::getThang() const { return thang; }
 int Luong::getNam() const { return nam; }
+double Luong::getLuongGoc() const { return luongGoc; }
 double Luong::getLuongCoBan() const { return luongCoBan; }
 double Luong::getPhuCap() const { return phuCap; }
 double Luong::getTienTangCa() const { return tienTangCa; }
+double Luong::getKhauTru() const { return khauTru; }
 double Luong::getLuongThucNhan() const { return luongThucNhan; }
 
-std::string Luong::serialize() const {
-    return maLuong + "|" + maNV + "|" + std::to_string(thang) + "|" + std::to_string(nam) + "|" +
-           formatDouble(luongCoBan) + "|" + formatDouble(phuCap) + "|" +
-           formatDouble(tienTangCa) + "|" + formatDouble(khauTru) + "|" +
-           formatDouble(luongThucNhan);
+string Luong::taoDongDuLieu() const {
+    return maLuong + "|" + maNV + "|" + loaiNV + "|" + to_string(thang) + "|" + to_string(nam) + "|" +
+           to_string(luongGoc) + "|" + to_string(luongCoBan) + "|" +
+           to_string(phuCap) + "|" + to_string(tienTangCa) + "|" +
+           to_string(khauTru) + "|" + to_string(luongThucNhan);
 }

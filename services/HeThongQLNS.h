@@ -29,7 +29,9 @@ public:
     void nhapChamCong();
 
     // Luong
+    void menuLuong();
     void tinhLuong();
+    void xemBangLuong();
 
     // Tim kiem & Thong ke
     void timKiem();
